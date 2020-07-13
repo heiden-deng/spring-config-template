@@ -1,0 +1,479 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" > 
+<mapper namespace="com.heiden.dbp.zuul.dao.mapper.LogMapper">
+<resultMap id="log" type="com.heiden.dbp.zuul.dao.entity.Log">
+	<result property="id" column="id"/>
+	<result property="url" column="url"/>
+	<result property="method" column="method"/>
+	<result property="location" column="location"/>
+	<result property="ip" column="ip"/>
+	<result property="startTime" column="start_time"/>
+	<result property="stopTime" column="stop_time"/>
+	<result property="requestTime" column="request_time"/>
+	<result property="status" column="status"/>
+	<result property="path" column="path"/>
+	<result property="msg" column="msg"/>
+	<result property="client_id" column="client_id"/>
+</resultMap>
+<insert id="insertLog" parameterType="com.heiden.dbp.zuul.dao.entity.Log">
+insert into log
+(	id,
+	url,
+	method,
+	location,
+	ip,
+	start_time,
+	stop_time,
+	request_time,
+	status,
+	path,
+	msg,
+	client_id
+)values(
+	#{id},
+	#{url},
+	#{method},
+	#{location},
+	#{ip},
+	#{startTime},
+	#{stopTime},
+	#{requestTime},
+	#{status},
+	#{path},
+	#{msg},
+	#{client_id}
+)
+</insert>
+<delete id="deleteLogById">
+	delete from log
+	where id=#{id}
+</delete>
+<select id="findLogById" resultMap="log">
+	select * from log
+	where id=#{id}
+</select>
+<select id="findLogList" resultMap="log">
+	select * from log
+</select>
+<update id="updateLog" parameterType="com.heiden.dbp.zuul.dao.entity.Log">
+update log
+<set>
+	id=#{id},
+	url=#{url},
+	method=#{method},
+	location=#{location},
+	ip=#{ip},
+	start_time=#{startTime},
+	stop_time=#{stopTime},
+	request_time=#{requestTime},
+	status=#{status},
+	path=#{path},
+	msg=#{msg},
+	client_id=#{client_id}
+</set>
+<where>	
+id=#{id}	
+</where>	
+</update>
+<update id="updateSensitiveLog" parameterType="com.heiden.dbp.zuul.dao.entity.Log">
+update log
+<set>
+	<if test="id!=null"> 
+		id=#{id},
+	</if>
+	<if test="url!=null"> 
+		url=#{url},
+	</if>
+	<if test="method!=null"> 
+		method=#{method},
+	</if>
+	<if test="location!=null"> 
+		location=#{location},
+	</if>
+	<if test="ip!=null"> 
+		ip=#{ip},
+	</if>
+	<if test="startTime!=null"> 
+		start_time=#{startTime},
+	</if>
+	<if test="stopTime!=null"> 
+		stop_time=#{stopTime},
+	</if>
+	<if test="requestTime!=null"> 
+		request_time=#{requestTime},
+	</if>
+	<if test="status!=null"> 
+		status=#{status},
+	</if>
+	<if test="path!=null"> 
+		path=#{path},
+	</if>
+	<if test="msg!=null"> 
+		msg=#{msg},
+	</if>
+	<if test="client_id!=null">
+		client_id=#{client_id}
+	</if>
+
+</set>
+<where>	
+id=#{id}	
+</where>	
+</update>
+<delete id="deleteLogListByIds" parameterType ="java.lang.String">
+	delete from log
+	where id in
+	<foreach item="idItem" collection="array" open="(" separator="," close=")">#{idItem}</foreach>
+</delete>
+<insert id="insertLogList" parameterType="java.util.List">
+insert into log
+(	id,
+	url,
+	method,
+	location,
+	ip,
+	start_time,
+	stop_time,
+	request_time,
+	status,
+	path,
+	msg,
+	client_id
+)values<foreach collection="list" item="item" index= "index" separator="," >
+(	#{item.id},
+	#{item.url},
+	#{item.method},
+	#{item.location},
+	#{item.ip},
+	#{item.startTime},
+	#{item.stopTime},
+	#{item.requestTime},
+	#{item.status},
+	#{item.path},
+	#{item.msg},
+	#{item.client_id}
+)</foreach>
+</insert>
+<update id="updateLogList" parameterType="java.util.List">
+<foreach collection="list" item="item" index= "index" separator=";" >
+update log
+set
+	id=#{item.id},
+	url=#{item.url},
+	method=#{item.method},
+	location=#{item.location},
+	ip=#{item.ip},
+	start_time=#{item.startTime},
+	stop_time=#{item.stopTime},
+	request_time=#{item.requestTime},
+	status=#{item.status},
+	path=#{item.path},
+	msg=#{item.msg},
+	client_id=#{item.client_id}
+
+where	
+id=#{item.id}	
+</foreach>
+</update>
+<select id="findLogQuery" resultMap="log">
+	select * from log
+	<where>
+	 <if test="id!=null and id!=''"> 
+		AND id=#{id}
+	</if>
+	 <if test="url!=null and url!=''"> 
+		AND url=#{url}
+	</if>
+	 <if test="method!=null and method!=''"> 
+		AND method=#{method}
+	</if>
+	 <if test="location!=null and location!=''"> 
+		AND location=#{location}
+	</if>
+	 <if test="ip!=null and ip!=''"> 
+		AND ip=#{ip}
+	</if>
+	 <if test="startTime!=null and startTime!=''"> 
+		AND start_time=#{startTime}
+	</if>
+	 <if test="stopTime!=null and stopTime!=''"> 
+		AND stop_time=#{stopTime}
+	</if>
+	 <if test="requestTime!=null and requestTime!=''"> 
+		AND request_time=#{requestTime}
+	</if>
+	 <if test="status!=null and status!=''"> 
+		AND status=#{status}
+	</if>
+	 <if test="path!=null and path!=''"> 
+		AND path=#{path}
+	</if>
+	 <if test="msg!=null and msg!=''"> 
+		AND msg=#{msg}
+	</if>
+	<if test="client_id!=null and client_id!=''">
+		AND client_id=#{client_id}
+	</if>
+</where>
+	</select>
+<select id="findLogQueryPage" resultMap="log">
+	select * from log
+	<where>
+	 <if test="obj.id!=null and obj.id!=''"> 
+		AND id=#{obj.id}
+	</if>
+	 <if test="obj.url!=null and obj.url!=''"> 
+		AND url=#{obj.url}
+	</if>
+	 <if test="obj.method!=null and obj.method!=''"> 
+		AND method=#{obj.method}
+	</if>
+	 <if test="obj.location!=null and obj.location!=''"> 
+		AND location=#{obj.location}
+	</if>
+	 <if test="obj.ip!=null and obj.ip!=''"> 
+		AND ip=#{obj.ip}
+	</if>
+	 <if test="obj.startTime!=null and obj.startTime!=''"> 
+		AND start_time=#{obj.startTime}
+	</if>
+	 <if test="obj.stopTime!=null and obj.stopTime!=''"> 
+		AND stop_time=#{obj.stopTime}
+	</if>
+	 <if test="obj.requestTime!=null "> 
+		AND request_time=#{obj.requestTime}
+	</if>
+	 <if test="obj.status!=null "> 
+		AND status=#{obj.status}
+	</if>
+	 <if test="obj.path!=null and obj.path!=''"> 
+		AND path=#{obj.path}
+	</if>
+	 <if test="obj.msg!=null and obj.msg!=''"> 
+		AND msg=#{obj.msg}
+	</if>
+	<if test="obj.client_id!=null and obj.client_id!=''">
+		AND client_id=#{obj.client_id}
+	</if>
+</where>
+		limit #{startIndex},#{limit}
+
+</select>
+<select id="findCountLogQuery" resultType="java.lang.Integer">
+	select count(*) from log
+	<where>
+	 <if test="id!=null and id!=''"> 
+		AND id=#{id}
+	</if>
+	 <if test="url!=null and url!=''"> 
+		AND url=#{url}
+	</if>
+	 <if test="method!=null and method!=''"> 
+		AND method=#{method}
+	</if>
+	 <if test="location!=null and location!=''"> 
+		AND location=#{location}
+	</if>
+	 <if test="ip!=null and ip!=''"> 
+		AND ip=#{ip}
+	</if>
+	 <if test="startTime!=null and startTime!=''"> 
+		AND start_time=#{startTime}
+	</if>
+	 <if test="stopTime!=null and stopTime!=''"> 
+		AND stop_time=#{stopTime}
+	</if>
+	 <if test="requestTime!=null and requestTime!=''"> 
+		AND request_time=#{requestTime}
+	</if>
+	 <if test="status!=null and status!=''"> 
+		AND status=#{status}
+	</if>
+	 <if test="path!=null and path!=''"> 
+		AND path=#{path}
+	</if>
+	 <if test="msg!=null and msg!=''"> 
+		AND msg=#{msg}
+	</if>
+	<if test="client_id!=null and client_id!=''">
+		AND client_id=#{client_id}
+	</if>
+</where>
+</select>
+<select id="findLogByTime" resultMap="log">
+	select * from log
+	<where>
+	 <if test="obj.id!=null and obj.id!=''"> 
+		AND id=#{obj.id}
+	</if>
+	 <if test="obj.method!=null and obj.method!=''"> 
+		AND method=#{obj.method}
+	</if>
+	 <if test="obj.location!=null and obj.location!=''"> 
+		AND location=#{obj.location}
+	</if>
+	 <if test="obj.ip!=null and obj.ip!=''"> 
+		AND ip=#{obj.ip}
+	</if>
+	 <if test="obj.startTime!=null and obj.startTime!=''"> 
+		AND start_time=#{obj.startTime}
+	</if>
+	 <if test="obj.stopTime!=null and obj.stopTime!=''"> 
+		AND stop_time=#{obj.stopTime}
+	</if>
+	 <if test="obj.requestTime!=null "> 
+		AND request_time=#{obj.requestTime}
+	</if>
+	<choose>  
+         <when test="obj.status!=null and obj.status!='' and responseStatus==200">AND status=#{obj.status}</when>
+         <when test="obj.status!=null and obj.status!='' and responseStatus!=200">AND status!=#{obj.status}</when>
+         <when test="obj.status!=null and obj.status!=''">AND status =#{obj.status}</when>
+     </choose>
+	 <if test="obj.path!=null and obj.path!=''"> 
+		AND path=#{obj.path}
+	</if>
+	 <if test="obj.msg!=null and obj.msg!=''"> 
+		AND msg=#{obj.msg}
+	</if>
+	<if test="obj.client_id!=null and obj.client_id!=''">
+		AND client_id=#{obj.client_id}
+	</if>
+	 <if test="beginTime !=null and beginTime!=''">
+	 	AND start_time <![CDATA[ >= ]]>  #{beginTime}
+	 </if>
+	 <if test="endTime !=null and endTime!=''">
+	 	AND start_time <![CDATA[ <= ]]> #{endTime}
+	 </if>
+	 <if test="apiId!=null"> 
+	    AND url in 
+		<foreach item="idItem" collection="apiId" open="(" separator="," close=")">#{idItem}</foreach>
+	</if>
+</where>
+</select>
+
+<select id="findLogSubsectionStats" resultType="java.util.Map">
+SELECT COUNT(STATUS) AS STATUS,start_time FROM (SELECT
+  STATUS,
+  DATE_FORMAT(start_time,#{timeTemplate}) AS start_time
+FROM (SELECT
+        STATUS,
+        FROM_UNIXTIME(start_time/1000,'%Y-%m-%d %H:%i:%s') AS start_time
+      FROM log
+	<where>
+	 <if test="obj.id!=null and obj.id!=''"> 
+		AND id=#{obj.id}
+	</if>
+	 <if test="obj.method!=null and obj.method!=''"> 
+		AND method=#{obj.method}
+	</if>
+	 <if test="obj.location!=null and obj.location!=''"> 
+		AND location=#{obj.location}
+	</if>
+	 <if test="obj.ip!=null and obj.ip!=''"> 
+		AND ip=#{obj.ip}
+	</if>
+	 <if test="obj.startTime!=null and obj.startTime!=''"> 
+		AND start_time=#{obj.startTime}
+	</if>
+	 <if test="obj.stopTime!=null and obj.stopTime!=''"> 
+		AND stop_time=#{obj.stopTime}
+	</if>
+	 <if test="obj.requestTime!=null "> 
+		AND request_time=#{obj.requestTime}
+	</if>
+	<choose>  
+         <when test="obj.status!=null and obj.status!='' and responseStatus==200">AND status=#{obj.status}</when>
+         <when test="obj.status!=null and obj.status!='' and responseStatus!=200">AND status!=#{obj.status}</when>
+         <when test="obj.status!=null and obj.status!=''">AND status =#{obj.status}</when>
+     </choose>
+	 <if test="obj.path!=null and obj.path!=''"> 
+		AND path=#{obj.path}
+	</if>
+	 <if test="obj.msg!=null and obj.msg!=''"> 
+		AND msg=#{obj.msg}
+	</if>
+	<if test="obj.client_id!=null and obj.client_id!=''">
+		AND client_id=#{obj.client_id}
+	</if>
+	 <if test="beginTime !=null and beginTime!=''">
+	 	AND start_time <![CDATA[ >= ]]>  #{beginTime}
+	 </if>
+	 <if test="endTime !=null and endTime!=''">
+	 	AND start_time <![CDATA[ <= ]]> #{endTime}
+	 </if>
+	 <if test="apiId!=null"> 
+	    AND url in 
+		<foreach item="idItem" collection="apiId" open="(" separator="," close=")">#{idItem}</foreach>
+	</if>
+</where>
+	) AS log ) AS log
+GROUP BY log.start_time
+ORDER BY log.start_time
+</select>
+
+<select id="findavgResponseTimeLog" resultType="java.util.Map">
+	SELECT
+ FORMAT(avg(request_time),2) AS request_time,
+  start_time
+FROM (
+SELECT 
+  request_time,
+        DATE_FORMAT(start_time,#{timeTemplate}) AS start_time
+ FROM(
+SELECT
+        request_time,
+        FROM_UNIXTIME(start_time/1000,'%Y-%m-%d %H:%i:%s') AS start_time
+      FROM log
+	<where>
+	 <if test="obj.id!=null and obj.id!=''"> 
+		AND id=#{obj.id}
+	</if>
+	 <if test="obj.method!=null and obj.method!=''"> 
+		AND method=#{obj.method}
+	</if>
+	 <if test="obj.location!=null and obj.location!=''"> 
+		AND location=#{obj.location}
+	</if>
+	 <if test="obj.ip!=null and obj.ip!=''"> 
+		AND ip=#{obj.ip}
+	</if>
+	 <if test="obj.startTime!=null and obj.startTime!=''"> 
+		AND start_time=#{obj.startTime}
+	</if>
+	 <if test="obj.stopTime!=null and obj.stopTime!=''"> 
+		AND stop_time=#{obj.stopTime}
+	</if>
+	 <if test="obj.requestTime!=null "> 
+		AND request_time=#{obj.requestTime}
+	</if>
+	<choose>  
+         <when test="obj.status!=null and obj.status!='' and responseStatus==200">AND status=#{obj.status}</when>
+         <when test="obj.status!=null and obj.status!='' and responseStatus!=200">AND status!=#{obj.status}</when>
+         <when test="obj.status!=null and obj.status!=''">AND status =#{obj.status}</when>
+     </choose>
+	 <if test="obj.path!=null and obj.path!=''"> 
+		AND path=#{obj.path}
+	</if>
+	 <if test="obj.msg!=null and obj.msg!=''"> 
+		AND msg=#{obj.msg}
+	</if>
+	<if test="obj.client_id!=null and obj.client_id!=''">
+		AND client_id=#{obj.client_id}
+	</if>
+	 <if test="beginTime !=null and beginTime!=''">
+	 	AND start_time <![CDATA[ >= ]]>  #{beginTime}
+	 </if>
+	 <if test="endTime !=null and endTime!=''">
+	 	AND start_time <![CDATA[ <= ]]> #{endTime}
+	 </if>
+	 <if test="apiId!=null"> 
+	    AND url in 
+		<foreach item="idItem" collection="apiId" open="(" separator="," close=")">#{idItem}</foreach>
+	</if>
+</where>
+	) AS log ) as log
+GROUP BY log.start_time
+ORDER BY log.start_time
+</select>
+</mapper>

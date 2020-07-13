@@ -1,0 +1,5 @@
+spring:
+    http:
+        multipart:
+          maxFileSize: -1
+          maxRequestSize: -1

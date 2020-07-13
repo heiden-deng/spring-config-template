@@ -1,0 +1,25 @@
+spring:
+    redis:
+        host: ${REDIS_HOST:127.0.0.1}
+        #host: ${REDIS_HOST:{ENC}9+MTrEqvfeafeae31111aAusJKP}
+        port: ${REDIS_PORT:6379}
+        password: ${REDIS_PASSWORD:123456}
+        #password: ${REDIS_PASSWORD:{ENC}+321233213==}
+        pool:
+          max-idle: 8
+          min-idle: 0
+          maxTotal: 8
+          testOnBorrow: true
+          testOnReturn: true
+          max-active: 8
+          max-wait: -1
+        timeout: 3600
+        commandTimeout: 5000
+        max-redirects: 8
+        enabled-cluster-sentinel: ${ENABLED_CLUSTER_SENTINEL:0} #0启动redis单例模式,1启动redis集群模式,2启动redis哨兵模式 
+        cluster: # redis 集群模式
+          nodes: ${REDIS_CLUSTER:127.0.0.1:7000,127.0.0.1:7001,127.0.0.1:7002,127.0.0.1:7003,127.0.0.1:7004,127.0.0.1:7005}
+          #nodes: ${REDIS_CLUSTER:{ENC}N+FEQ8ie2yyWgageaeGHUQ1111G7ljAOONqMGft1whuNrageageyu2ys6ALg9HCYU/Q5rVAB4pXQQlwvKna9qrVQJD96MEmCfBHjzSiiccnptg7d/F0=}
+        sentinel: # redis 哨兵模式
+           master: ${REDIS_MASTER:mymaster}
+           nodes: ${REDIS_SENTINEL:127.0.0.1:26379,127.0.0.1:26379,127.0.0.1:26379}

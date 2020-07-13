@@ -1,0 +1,15 @@
+hystrix:
+    command:
+      default:
+        execution:
+          isolation:
+            thread:
+              timeoutInMilliseconds: 10000
+
+ribbon:
+    ReadTimeout: 10000
+    ConnectTimeout: 10000
+    filter:
+        metadata:
+        enabled: true
+              
